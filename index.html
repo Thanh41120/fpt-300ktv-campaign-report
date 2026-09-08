@@ -108,6 +108,8 @@
   .modal .box{background:var(--panel);border:1px solid var(--line);border-radius:16px;
               box-shadow:var(--sh2);max-width:560px;width:100%;max-height:88vh;overflow:auto;padding:24px}
   .modal img{max-width:100%;border-radius:10px;margin-top:12px}
+  .btn-open{display:inline-block;text-decoration:none;font-size:14px;font-weight:600;
+            padding:9px 14px;border-radius:10px;background:var(--acc2);color:var(--panel)}
   .ph{border:2px dashed var(--line);border-radius:12px;padding:26px;text-align:center;
       color:var(--dim);font-size:14px;margin-top:12px;line-height:1.6}
   code{background:var(--panel2);padding:2px 6px;border-radius:5px;font-size:13.5px;
@@ -263,7 +265,8 @@ const CPL_BAD  = 50000;             // >  50k/lead: cần tối ưu
 const CAMPAIGN_KEY = "300KTV";      // chỉ tính chiến dịch chứa từ khoá này
 const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQKsh9VBPf8fGynB2hBMWfH3qF3rZyoHV9USOIKk9M09x7TFMrIQdbxSfNzAo8pb0vfRNR-WoJQDZVg/pub?gid=133568434&single=true&output=csv";
 
-/* Demo bài quảng cáo. Điền text + link ảnh cho từng tên quảng cáo khi có.
+/* Link + ảnh + nội dung bài quảng cáo giờ đổ TỰ ĐỘNG từ 4 cột cuối của Sheet.
+   Chỉ điền vào đây khi muốn ĐÈ thủ công một quảng cáo cụ thể.
    Ví dụ: "2609_300KTV_Lead_KTV_FTEL_Content 3": {text:"Nội dung bài...", image:"https://...jpg", link:"https://facebook.com/..."} */
 const AD_CREATIVES = {};
 
@@ -324,14 +327,19 @@ function fromCSV(txt){
     reach: pick(H,"Người tiếp cận","Reach"),
     impr:  pick(H,"Lượt hiển thị","Impressions"),
     clk:   pick(H,"Lượt click vào liên kết","Link clicks"),
-    eng:   pick(H,"Lượt tương tác với bài viết","Post engagement")
+    eng:   pick(H,"Lượt tương tác với bài viết","Post engagement"),
+    link:  pick(H,"Link bài viết"),
+    img:   pick(H,"Ảnh quảng cáo"),
+    text:  pick(H,"Nội dung quảng cáo"),
+    upd:   pick(H,"Thời điểm cập nhật")
   };
   const g=(r,i)=> i>=0 ? (r[i]||"") : "";
   return rows.slice(1).map(r=>({
     camp:g(r,c.camp).trim(), date:g(r,c.date).trim(), ad:g(r,c.ad).trim(),
     page:g(r,c.page).trim(), status:(g(r,c.st)||"").trim().toLowerCase(),
     spend:money(g(r,c.spend)), res:ival(g(r,c.res)), reach:ival(g(r,c.reach)),
-    impr:ival(g(r,c.impr)), clk:ival(g(r,c.clk)), eng:ival(g(r,c.eng))
+    impr:ival(g(r,c.impr)), clk:ival(g(r,c.clk)), eng:ival(g(r,c.eng)),
+    link:g(r,c.link).trim(), img:g(r,c.img).trim(), text:g(r,c.text), upd:g(r,c.upd).trim()
   }));
 }
 
@@ -545,23 +553,32 @@ function renderAds(){
       `<span class="pill ${x.st==="active"?"p-good":"p-off"}">${x.st==="active"?"Đang chạy":"Đã tắt"}</span>`,
       vnd(x.spendV), num(x.res), x.res?vnd(x.cpl):"-", num(x.reach), num(x.clk), pct(x.ctr),
       `<span class="pill p-${x.rt}">${RATE_LABEL[x.rt]}</span>`,
-      `<button onclick='showAd(${JSON.stringify(x.ad).replace(/'/g,"&#39;")})'>Xem</button>`
+      `<button onclick='showAd(${JSON.stringify(x.ad).replace(/'/g,"&#39;")},${JSON.stringify(x.page).replace(/'/g,"&#39;")})'>Xem</button>`
     ]),
     ["Tổng","","",vnd(T.spendV),num(T.res),T.res?vnd(T.cpl):"-",num(T.reach),num(T.clk),pct(T.ctr),"",""]);
 }
 
-function showAd(name){
+const esc = s => String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+function creativeOf(name,page){
+  const r = DATA.find(x=>x.ad===name && (!page||x.page===page) && (x.link||x.img||x.text))
+         || DATA.find(x=>x.ad===name && (x.link||x.img||x.text)) || {};
   const c = AD_CREATIVES[name] || {};
-  const body = (c.text||c.image)
-    ? `${c.text?`<div style="white-space:pre-wrap;margin-top:10px">${c.text}</div>`:""}
-       ${c.image?`<img src="${c.image}" alt="">`:""}
-       ${c.link?`<div style="margin-top:12px"><a href="${c.link}" target="_blank" style="color:var(--acc2)">Mở bài quảng cáo gốc</a></div>`:""}`
-    : `<div class="ph">Chưa có nội dung demo cho quảng cáo này.<br><br>
-        Để hiện được, mở file HTML này bằng trình soạn thảo, tìm dòng <code>const AD_CREATIVES = {};</code> rồi điền:<br><br>
-        <code style="display:block;text-align:left;padding:10px">"${name}": {<br>&nbsp;&nbsp;text: "Nội dung bài quảng cáo...",<br>&nbsp;&nbsp;image: "https://link-anh.jpg",<br>&nbsp;&nbsp;link: "https://facebook.com/..."<br>}</code></div>`;
+  return { text:c.text||r.text||"", image:c.image||r.img||"", link:c.link||r.link||"" };
+}
+function showAd(name,page){
+  const c = creativeOf(name,page);
+  const body = (c.text||c.image||c.link)
+    ? `${c.link?`<div style="margin:12px 0"><a class="btn-open" href="${esc(c.link)}" target="_blank" rel="noopener">Mở bài quảng cáo trên Facebook</a></div>`:""}
+       ${c.image?`<img src="${esc(c.image)}" alt="Ảnh quảng cáo" loading="lazy">`:""}
+       ${c.text?`<div style="white-space:pre-wrap;margin-top:12px;line-height:1.55">${esc(c.text)}</div>`:""}`
+    : `<div class="ph">Chưa lấy được nội dung bài cho quảng cáo này.<br><br>
+        Nội dung và link bài giờ đổ tự động từ Google Sheet (4 cột cuối: Link bài viết,
+        Ảnh quảng cáo, Nội dung quảng cáo, Thời điểm cập nhật). Nếu ô trống, kiểm tra lại
+        script cập nhật trong Sheet.</div>`;
   document.getElementById("modalBox").innerHTML =
     `<div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">
-       <b style="font-size:15px">${name}</b><button onclick="closeModal()">Đóng</button></div>${body}`;
+       <b style="font-size:15px">${esc(name)}${page?` · ${esc(page)}`:""}</b>
+       <button onclick="closeModal()">Đóng</button></div>${body}`;
   document.getElementById("modal").classList.add("on");
 }
 function closeModal(){ document.getElementById("modal").classList.remove("on"); }
@@ -600,9 +617,9 @@ function renderActions(rows,t){
     `Cải thiện CTR đang ở mức ${pct(t.ctr)}`,
     `CTR dưới 1% cho thấy hình ảnh hoặc dòng tiêu đề chưa đủ hút. Thử đổi ảnh chính và câu mở đầu.`]);
 
-  A.push(["low",
+  if(!DATA.some(r=>r.link)) A.push(["low",
     `Bổ sung link + nội dung từng bài quảng cáo vào báo cáo`,
-    `Phần 3 hiện chỉ có số liệu, chưa xem được demo bài. Điền vào AD_CREATIVES trong file để xem text và ảnh ngay trong dashboard.`]);
+    `Phần 3 đang thiếu 4 cột cuối của Sheet (Link bài viết, Ảnh quảng cáo, Nội dung quảng cáo, Thời điểm cập nhật) nên bấm "Xem" chưa mở được bài. Kiểm tra lại script cập nhật gắn trong Google Sheet.`]);
   A.push(["low",
     `Theo dõi chất lượng lead sau tuyển dụng`,
     `CPL toàn kỳ ${t.res?vnd(t.cpl):"-"} chỉ đo giá lead trên Meta. Cần đối chiếu tỷ lệ lead thật sự đi phỏng vấn để biết nội dung nào ra lead chất lượng.`]);
@@ -660,9 +677,11 @@ function boot(rows, src){
   document.getElementById("rangeExport").textContent = `${dmy(all[0])} - ${dmy(all[all.length-1])}`;
   document.getElementById("firstDeliver").textContent = spent.length?dmy(spent[0]):"chưa phân phối";
   document.getElementById("campName").textContent = DATA[0].camp || "-";
-  document.getElementById("lastUpd").textContent =
-    new Date().toLocaleString("vi-VN",{hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit",year:"numeric"})
-    + (src==="live" ? " (dữ liệu sống từ Google Sheet)" : " (bản chụp dự phòng trong file)");
+  const upd = (DATA.find(r=>r.upd)||{}).upd || "";
+  document.getElementById("lastUpd").textContent = (src==="live" && upd)
+    ? upd + " (Sheet tự cập nhật 3 tiếng/lần)"
+    : new Date().toLocaleString("vi-VN",{hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit",year:"numeric"})
+      + (src==="live" ? " (dữ liệu sống từ Google Sheet)" : " (bản chụp dự phòng trong file)");
   document.getElementById("preset").value="all"; onPreset();
   cmpPreset("d");
 }
