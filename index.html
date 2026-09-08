@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Báo cáo quảng cáo tuyển dụng 300 KTV - FPT Telecom</title>
+<style>
+  :root{
+    --bg:#f4f6fa; --panel:#ffffff; --panel2:#eef2f7; --line:#dde3ec;
+    --txt:#131a24; --dim:#5c6878; --acc:#ea580c; --acc2:#0369a1;
+    --good:#15803d; --warn:#a16207; --bad:#be123c;
+    --good-bg:#e7f6ec; --warn-bg:#fdf3d8; --bad-bg:#fdeaee; --off-bg:#eceff4;
+    --hover:#f6f9fd; --bar-bg:#e6ebf2;
+    --sh:0 1px 2px rgba(18,28,45,.05), 0 2px 8px rgba(18,28,45,.05);
+    --sh2:0 4px 20px rgba(18,28,45,.10);
+  }
+  body.dark{
+    --bg:#0d1117; --panel:#161b22; --panel2:#1c2230; --line:#2a3140;
+    --txt:#e6edf3; --dim:#95a2b3; --acc:#fb923c; --acc2:#56ccf8;
+    --good:#4ade80; --warn:#fcd34d; --bad:#fb7185;
+    --good-bg:rgba(34,197,94,.16); --warn-bg:rgba(234,179,8,.16);
+    --bad-bg:rgba(239,68,68,.16); --off-bg:rgba(139,152,169,.15);
+    --hover:#1a2130; --bar-bg:#232b3a;
+    --sh:none; --sh2:0 4px 24px rgba(0,0,0,.5);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--txt);
+       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+       font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1280px;margin:0 auto;padding:26px 22px 72px}
+  header{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start;justify-content:space-between;
+         background:var(--panel);border:1px solid var(--line);border-radius:16px;
+         box-shadow:var(--sh);padding:20px 22px;margin-bottom:18px}
+  h1{margin:0;font-size:26px;line-height:1.25;letter-spacing:-.4px;font-weight:700}
+  .sub{color:var(--dim);font-size:14.5px;margin-top:8px}
+  .sub b{color:var(--txt);font-weight:600}
+  .btns{display:flex;gap:10px;flex-wrap:wrap}
+  button{font:inherit;font-size:15px;cursor:pointer;border-radius:10px;border:1px solid var(--line);
+         background:var(--panel);color:var(--txt);padding:9px 16px;font-weight:500;
+         transition:border-color .12s,background .12s,transform .06s}
+  button:hover{border-color:var(--acc);background:var(--hover)}
+  button:active{transform:translateY(1px)}
+  button.primary{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:600}
+  button.primary:hover{background:var(--acc);filter:brightness(1.07)}
+  .banner{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--acc2);
+          border-radius:12px;box-shadow:var(--sh);padding:15px 18px;margin-bottom:18px;
+          font-size:14.5px;color:var(--dim);line-height:1.65}
+  .banner b{color:var(--txt);font-weight:600}
+  .filters{background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh);
+           padding:14px 18px;margin-bottom:20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+  .filters label{color:var(--dim);font-size:14px;font-weight:500}
+  select,input[type=date]{font:inherit;font-size:15px;background:var(--panel);color:var(--txt);
+        border:1px solid var(--line);border-radius:9px;padding:8px 11px}
+  select:focus,input[type=date]:focus{outline:2px solid var(--acc2);outline-offset:1px}
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:22px;background:var(--panel2);
+        border:1px solid var(--line);border-radius:12px;padding:5px}
+  .tab{padding:10px 18px;border-radius:9px;color:var(--dim);cursor:pointer;
+       font-size:15px;font-weight:500;white-space:nowrap;transition:background .12s,color .12s}
+  .tab:hover{color:var(--txt)}
+  .tab.on{background:var(--panel);color:var(--txt);font-weight:600;box-shadow:var(--sh)}
+  .pane{display:none} .pane.on{display:block}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:14px;margin-bottom:24px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;
+        box-shadow:var(--sh);padding:18px 19px}
+  .card .k{color:var(--dim);font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+  .card .v{font-size:32px;font-weight:700;margin-top:8px;letter-spacing:-.8px;line-height:1.15}
+  .card .n{color:var(--dim);font-size:13px;margin-top:6px;line-height:1.45}
+  h2{font-size:19px;font-weight:700;margin:32px 0 14px;padding-bottom:10px;
+     border-bottom:2px solid var(--line);letter-spacing:-.2px}
+  h3{font-size:15px;font-weight:700;margin:24px 0 10px;color:var(--acc2)}
+  .tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);
+       border-radius:14px;box-shadow:var(--sh);background:var(--panel)}
+  table{width:100%;border-collapse:collapse;font-size:14.5px;min-width:560px}
+  th,td{padding:12px 14px;text-align:right;border-bottom:1px solid var(--line)}
+  th:first-child,td:first-child{text-align:left;font-weight:500}
+  th{background:var(--panel2);color:var(--dim);font-weight:700;font-size:12.5px;
+     text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr:hover{background:var(--hover)}
+  tfoot td{background:var(--panel2);font-weight:700;border-top:2px solid var(--line);border-bottom:none}
+  .bar{height:8px;background:var(--bar-bg);border-radius:5px;overflow:hidden;margin-top:5px;min-width:70px}
+  .bar i{display:block;height:100%;background:var(--acc);border-radius:5px}
+  .pill{display:inline-block;padding:4px 11px;border-radius:20px;font-size:12.5px;
+        font-weight:600;white-space:nowrap}
+  .p-good{background:var(--good-bg);color:var(--good)}
+  .p-warn{background:var(--warn-bg);color:var(--warn)}
+  .p-bad{background:var(--bad-bg);color:var(--bad)}
+  .p-off{background:var(--off-bg);color:var(--dim)}
+  .note{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--acc);
+        border-radius:12px;box-shadow:var(--sh);padding:16px 20px;margin:16px 0;font-size:15px}
+  .note ul{margin:10px 0 0;padding-left:22px} .note li{margin:8px 0;line-height:1.6}
+  .act{background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh);
+       padding:16px 19px;margin-bottom:12px;border-left:4px solid var(--line)}
+  .act.hi{border-left-color:var(--bad)} .act.mid{border-left-color:var(--warn)}
+  .act.low{border-left-color:var(--acc2)}
+  .act b{display:block;margin-bottom:6px;font-size:16px}
+  .act .why{color:var(--dim);font-size:14.5px;line-height:1.6}
+  .cmp{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+  .up{color:var(--good);font-weight:600} .down{color:var(--bad);font-weight:600}
+  .err{background:var(--bad-bg);border:1px solid var(--bad);color:var(--bad);
+       border-radius:12px;padding:14px 18px;margin-bottom:18px;font-size:14.5px;line-height:1.6}
+  .ok{background:var(--good-bg);border:1px solid var(--good);color:var(--good);
+      border-radius:12px;padding:12px 18px;margin-bottom:18px;font-size:14.5px;font-weight:500}
+  .modal{position:fixed;inset:0;background:rgba(10,15,25,.6);backdrop-filter:blur(3px);display:none;
+         align-items:center;justify-content:center;padding:20px;z-index:50}
+  .modal.on{display:flex}
+  .modal .box{background:var(--panel);border:1px solid var(--line);border-radius:16px;
+              box-shadow:var(--sh2);max-width:560px;width:100%;max-height:88vh;overflow:auto;padding:24px}
+  .modal img{max-width:100%;border-radius:10px;margin-top:12px}
+  .ph{border:2px dashed var(--line);border-radius:12px;padding:26px;text-align:center;
+      color:var(--dim);font-size:14px;margin-top:12px;line-height:1.6}
+  code{background:var(--panel2);padding:2px 6px;border-radius:5px;font-size:13.5px;
+       font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  @media print{
+    body{background:#fff!important;color:#111!important;font-size:12px}
+    body.dark{--panel:#fff;--panel2:#f1f1f1;--line:#ccc;--txt:#111;--dim:#555;--hover:#fff}
+    .wrap{max-width:none;padding:0}
+    .btns,.tabs,.filters,.modal{display:none!important}
+    .pane{display:block!important;page-break-inside:avoid}
+    header{box-shadow:none;border:none;border-bottom:2px solid #ccc;border-radius:0;padding:0 0 12px}
+    .card,.tbl,.note,.act,.banner{border-color:#ccc;background:#fff;box-shadow:none}
+    .tbl{overflow:visible} table{min-width:0}
+    th{background:#f1f1f1;color:#333}
+    h1{font-size:19px} .card .v{font-size:22px} h2{font-size:15px;margin-top:18px}
+  }
+  @media(max-width:760px){
+    body{font-size:15.5px}
+    .wrap{padding:16px 13px 48px}
+    header{padding:16px 16px;border-radius:14px}
+    h1{font-size:21px}
+    .card .v{font-size:27px}
+    .cmp{grid-template-columns:1fr}
+    .tabs{overflow-x:auto;flex-wrap:nowrap}
+  }
+</style>
+</head>
+<body>
+<script>try{if(localStorage.getItem("bcTheme")==="dark")document.body.classList.add("dark");}catch(e){}</script>
+<div class="wrap">
+
+<header>
+  <div>
+    <h1>Báo cáo hiệu suất quảng cáo tuyển dụng 300 KTV</h1>
+    <div class="sub">
+      Chiến dịch <b id="campName">2609_300KTV_Lead_KTV_FTEL</b> ·
+      Cập nhật lần cuối: <b id="lastUpd">-</b> ·
+      Tỷ giá quy đổi: <b>1 USD = 26.260đ</b>
+    </div>
+  </div>
+  <div class="btns">
+    <button onclick="toggleTheme()" id="themeBtn" title="Đổi nền sáng / tối">Nền tối</button>
+    <button onclick="loadData(true)">Làm mới dữ liệu</button>
+    <button class="primary" onclick="window.print()">In / Xuất PDF</button>
+  </div>
+</header>
+
+<div id="msg"></div>
+
+<div class="banner">
+  <b>Phạm vi báo cáo:</b> dữ liệu xuất từ <b id="rangeExport">-</b>,
+  nhưng chiến dịch <b>bắt đầu phân phối thực tế từ <span id="firstDeliver">-</span></b>
+  (các ngày trước đó chi tiêu bằng 0). Mọi chỉ số trung bình chỉ tính trên ngày có phân phối.<br>
+  <b>Không có breakdown theo độ tuổi</b> - dữ liệu tuổi trên Facebook chỉ là khoảng ước lượng và người dùng có thể khai sai, nên đã loại khỏi báo cáo theo yêu cầu.<br>
+  <b>Đã loại dòng nhiễu:</b> dòng tổng (Ngày/Trang = "All"), chiến dịch ngoài phạm vi 300KTV, và dòng chi tiêu = 0 khi tính chỉ số trung bình.
+  <span id="noiseInfo"></span>
+</div>
+
+<div class="filters">
+  <label>Kỳ báo cáo</label>
+  <select id="preset" onchange="onPreset()">
+    <option value="all">Toàn kỳ</option>
+    <option value="today">Hôm nay</option>
+    <option value="yday">Hôm qua</option>
+    <option value="7d">7 ngày gần nhất</option>
+    <option value="month">Tháng này</option>
+    <option value="custom">Khoảng ngày tùy chỉnh</option>
+  </select>
+  <label>Từ</label><input type="date" id="from" onchange="setCustom()">
+  <label>Đến</label><input type="date" id="to" onchange="setCustom()">
+  <span style="color:var(--dim);font-size:12.5px" id="rangeInfo"></span>
+</div>
+
+<div class="tabs">
+  <div class="tab on" data-t="1" onclick="tab(1)">1 · Tổng quan</div>
+  <div class="tab" data-t="2" onclick="tab(2)">2 · Insight</div>
+  <div class="tab" data-t="3" onclick="tab(3)">3 · Chi tiết nhóm QC</div>
+  <div class="tab" data-t="4" onclick="tab(4)">4 · Action</div>
+</div>
+
+<div class="pane on" id="p1">
+  <div class="cards" id="kpis"></div>
+  <h2>So sánh hiệu suất giữa 2 kỳ</h2>
+  <div class="cmp">
+    <div class="card">
+      <div class="k">Kỳ A</div>
+      <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+        <input type="date" id="aFrom" onchange="renderCompare()">
+        <input type="date" id="aTo" onchange="renderCompare()">
+      </div>
+    </div>
+    <div class="card">
+      <div class="k">Kỳ B (so với)</div>
+      <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+        <input type="date" id="bFrom" onchange="renderCompare()">
+        <input type="date" id="bTo" onchange="renderCompare()">
+      </div>
+    </div>
+  </div>
+  <div class="btns" style="margin-bottom:12px">
+    <button onclick="cmpPreset('d')">Hôm nay vs hôm qua</button>
+    <button onclick="cmpPreset('w')">7 ngày này vs 7 ngày trước</button>
+    <button onclick="cmpPreset('m')">Tháng này vs tháng trước</button>
+  </div>
+  <div id="cmpOut"></div>
+  <h2>Diễn biến theo ngày</h2>
+  <div id="trend"></div>
+</div>
+
+<div class="pane" id="p2">
+  <h2>1. Lead theo nội dung quảng cáo</h2>
+  <div id="byContent"></div>
+  <h2>2. Lead theo ngày</h2>
+  <div id="byDate"></div>
+  <h2>3. Lead theo trang chạy</h2>
+  <div id="byPage"></div>
+  <h2>Nhận xét nổi bật</h2>
+  <div id="insight"></div>
+</div>
+
+<div class="pane" id="p3">
+  <div class="filters" style="margin-bottom:14px">
+    <label>Trạng thái</label>
+    <select id="fStatus" onchange="renderAds()">
+      <option value="">Tất cả</option><option value="active">Đang chạy</option>
+      <option value="inactive">Đã tắt</option>
+    </select>
+    <label>Đánh giá</label>
+    <select id="fRate" onchange="renderAds()">
+      <option value="">Tất cả</option><option value="good">Hiệu quả cao</option>
+      <option value="warn">Trung bình</option><option value="bad">Cần tối ưu</option>
+    </select>
+  </div>
+  <div id="adsTable"></div>
+</div>
+
+<div class="pane" id="p4">
+  <h2>Action cần thực hiện</h2>
+  <div id="actions"></div>
+</div>
+
+</div>
+
+<div class="modal" id="modal" onclick="if(event.target.id==='modal')closeModal()">
+  <div class="box" id="modalBox"></div>
+</div>
+
+<script>
+/* ====================== CẤU HÌNH ====================== */
+const RATE = 26260;                 // 1 USD = 26.260 VNĐ
+const CPL_GOOD = 30000;             // <= 30k/lead: hiệu quả cao
+const CPL_BAD  = 50000;             // >  50k/lead: cần tối ưu
+const CAMPAIGN_KEY = "300KTV";      // chỉ tính chiến dịch chứa từ khoá này
+const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQKsh9VBPf8fGynB2hBMWfH3qF3rZyoHV9USOIKk9M09x7TFMrIQdbxSfNzAo8pb0vfRNR-WoJQDZVg/pub?gid=133568434&single=true&output=csv";
+
+/* Demo bài quảng cáo. Điền text + link ảnh cho từng tên quảng cáo khi có.
+   Ví dụ: "2609_300KTV_Lead_KTV_FTEL_Content 3": {text:"Nội dung bài...", image:"https://...jpg", link:"https://facebook.com/..."} */
+const AD_CREATIVES = {};
+
+/* Dữ liệu dự phòng chụp lúc tạo file - dùng khi không tải được Sheet */
+const SNAPSHOT = [{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-08","ad":"2609_300KTV_Lead_KTV_FTEL_Content 3","page":"Tuyển dụng FPT Telecom","status":"active","spend":4.18,"res":30,"reach":4251,"impr":5013,"clk":76,"eng":8000},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-08","ad":"2609_300KTV_Lead_KTV_FTEL_Content4","page":"Tuyển dụng FPT Telecom Miền Bắc","status":"active","spend":9.97,"res":18,"reach":7291,"impr":9849,"clk":93,"eng":10700},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-08","ad":"2609_300KTV_Lead_KTV_FTEL_1","page":"Tuyển dụng FPT Telecom","status":"active","spend":3.82,"res":17,"reach":2577,"impr":3125,"clk":67,"eng":7200},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-08","ad":"2609_300KTV_Lead_KTV_FTEL_Content4","page":"Tuyển dụng FPT Telecom Miền Bắc","status":"inactive","spend":0.0,"res":0,"reach":0,"impr":0,"clk":0,"eng":0},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-08","ad":"2609_300KTV_Lead_KTV_FTEL_Content 3","page":"Tuyển dụng FPT Telecom Miền Bắc","status":"inactive","spend":0.0,"res":0,"reach":0,"impr":0,"clk":0,"eng":0},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-08","ad":"2609_300KTV_Lead_KTV_FTEL_1","page":"Tuyển dụng FPT Telecom Miền Bắc","status":"active","spend":5.28,"res":19,"reach":4934,"impr":5703,"clk":104,"eng":10600},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-07","ad":"2609_300KTV_Lead_KTV_FTEL_Content4","page":"Tuyển dụng FPT Telecom Miền Bắc","status":"inactive","spend":0.0,"res":0,"reach":0,"impr":0,"clk":0,"eng":0},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-07","ad":"2609_300KTV_Lead_KTV_FTEL_1","page":"Tuyển dụng FPT Telecom Miền Bắc","status":"active","spend":18.69,"res":73,"reach":13413,"impr":18380,"clk":396,"eng":41200},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-07","ad":"2609_300KTV_Lead_KTV_FTEL_Content 3","page":"Tuyển dụng FPT Telecom Miền Bắc","status":"inactive","spend":0.0,"res":0,"reach":0,"impr":0,"clk":0,"eng":0},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-07","ad":"2609_300KTV_Lead_KTV_FTEL_1","page":"Tuyển dụng FPT Telecom","status":"active","spend":15.8,"res":70,"reach":11262,"impr":14990,"clk":382,"eng":40100},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-07","ad":"2609_300KTV_Lead_KTV_FTEL_Content4","page":"Tuyển dụng FPT Telecom Miền Bắc","status":"active","spend":22.89,"res":48,"reach":10690,"impr":18198,"clk":207,"eng":26800},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-07","ad":"2609_300KTV_Lead_KTV_FTEL_Content 3","page":"Tuyển dụng FPT Telecom","status":"active","spend":14.79,"res":121,"reach":10898,"impr":15588,"clk":391,"eng":41600},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-06","ad":"2609_300KTV_Lead_KTV_FTEL_Content 3","page":"Tuyển dụng FPT Telecom","status":"active","spend":18.29,"res":105,"reach":10031,"impr":17087,"clk":319,"eng":34700},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-06","ad":"2609_300KTV_Lead_KTV_FTEL_Content4","page":"Tuyển dụng FPT Telecom Miền Bắc","status":"active","spend":24.24,"res":21,"reach":9761,"impr":18643,"clk":140,"eng":21700},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-06","ad":"2609_300KTV_Lead_KTV_FTEL_1","page":"Tuyển dụng FPT Telecom","status":"active","spend":18.05,"res":65,"reach":12146,"impr":18064,"clk":381,"eng":40700},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-06","ad":"2609_300KTV_Lead_KTV_FTEL_Content4","page":"Tuyển dụng FPT Telecom Miền Bắc","status":"inactive","spend":5.27,"res":3,"reach":3654,"impr":3961,"clk":25,"eng":2700},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-06","ad":"2609_300KTV_Lead_KTV_FTEL_Content 3","page":"Tuyển dụng FPT Telecom Miền Bắc","status":"inactive","spend":1.7,"res":0,"reach":664,"impr":790,"clk":17,"eng":1900},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-06","ad":"2609_300KTV_Lead_KTV_FTEL_1","page":"Tuyển dụng FPT Telecom Miền Bắc","status":"active","spend":11.44,"res":37,"reach":9343,"impr":13103,"clk":181,"eng":19200},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-05","ad":"2609_300KTV_Lead_KTV_FTEL_Content 3","page":"Tuyển dụng FPT Telecom Miền Bắc","status":"inactive","spend":0.0,"res":0,"reach":0,"impr":0,"clk":0,"eng":0},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-05","ad":"2609_300KTV_Lead_KTV_FTEL_Content 3","page":"Tuyển dụng FPT Telecom","status":"active","spend":0.0,"res":0,"reach":0,"impr":0,"clk":0,"eng":0},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-05","ad":"2609_300KTV_Lead_KTV_FTEL_Content4","page":"Tuyển dụng FPT Telecom Miền Bắc","status":"active","spend":0.0,"res":0,"reach":0,"impr":0,"clk":0,"eng":0},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-05","ad":"2609_300KTV_Lead_KTV_FTEL_1","page":"Tuyển dụng FPT Telecom","status":"active","spend":0.0,"res":0,"reach":0,"impr":0,"clk":0,"eng":0},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-05","ad":"2609_300KTV_Lead_KTV_FTEL_Content4","page":"Tuyển dụng FPT Telecom Miền Bắc","status":"inactive","spend":0.0,"res":0,"reach":0,"impr":0,"clk":0,"eng":0},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-05","ad":"2609_300KTV_Lead_KTV_FTEL_1","page":"Tuyển dụng FPT Telecom Miền Bắc","status":"active","spend":12.78,"res":46,"reach":8204,"impr":12411,"clk":237,"eng":25500},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-04","ad":"2609_300KTV_Lead_KTV_FTEL_Content4","page":"Tuyển dụng FPT Telecom Miền Bắc","status":"active","spend":0.0,"res":0,"reach":0,"impr":0,"clk":0,"eng":0},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-04","ad":"2609_300KTV_Lead_KTV_FTEL_1","page":"Tuyển dụng FPT Telecom","status":"active","spend":0.0,"res":0,"reach":0,"impr":0,"clk":0,"eng":0},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-04","ad":"2609_300KTV_Lead_KTV_FTEL_Content4","page":"Tuyển dụng FPT Telecom Miền Bắc","status":"inactive","spend":0.0,"res":0,"reach":0,"impr":0,"clk":0,"eng":0},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-04","ad":"2609_300KTV_Lead_KTV_FTEL_Content 3","page":"Tuyển dụng FPT Telecom Miền Bắc","status":"inactive","spend":0.0,"res":0,"reach":0,"impr":0,"clk":0,"eng":0},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-04","ad":"2609_300KTV_Lead_KTV_FTEL_1","page":"Tuyển dụng FPT Telecom Miền Bắc","status":"active","spend":7.19,"res":27,"reach":4109,"impr":6084,"clk":161,"eng":16900},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-04","ad":"2609_300KTV_Lead_KTV_FTEL_Content 3","page":"Tuyển dụng FPT Telecom","status":"active","spend":0.0,"res":0,"reach":0,"impr":0,"clk":0,"eng":0},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-03","ad":"2609_300KTV_Lead_KTV_FTEL_1","page":"Tuyển dụng FPT Telecom Miền Bắc","status":"active","spend":0.0,"res":0,"reach":0,"impr":0,"clk":0,"eng":0},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-03","ad":"2609_300KTV_Lead_KTV_FTEL_Content 3","page":"Tuyển dụng FPT Telecom Miền Bắc","status":"inactive","spend":0.0,"res":0,"reach":0,"impr":0,"clk":0,"eng":0},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-03","ad":"2609_300KTV_Lead_KTV_FTEL_Content4","page":"Tuyển dụng FPT Telecom Miền Bắc","status":"inactive","spend":0.0,"res":0,"reach":0,"impr":0,"clk":0,"eng":0},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-03","ad":"2609_300KTV_Lead_KTV_FTEL_1","page":"Tuyển dụng FPT Telecom","status":"active","spend":0.0,"res":0,"reach":0,"impr":0,"clk":0,"eng":0},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-03","ad":"2609_300KTV_Lead_KTV_FTEL_Content4","page":"Tuyển dụng FPT Telecom Miền Bắc","status":"active","spend":0.0,"res":0,"reach":0,"impr":0,"clk":0,"eng":0},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-03","ad":"2609_300KTV_Lead_KTV_FTEL_Content 3","page":"Tuyển dụng FPT Telecom","status":"active","spend":0.0,"res":0,"reach":0,"impr":0,"clk":0,"eng":0},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-02","ad":"2609_300KTV_Lead_KTV_FTEL_Content 3","page":"Tuyển dụng FPT Telecom","status":"active","spend":0.0,"res":0,"reach":0,"impr":0,"clk":0,"eng":0},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-02","ad":"2609_300KTV_Lead_KTV_FTEL_Content4","page":"Tuyển dụng FPT Telecom Miền Bắc","status":"active","spend":0.0,"res":0,"reach":0,"impr":0,"clk":0,"eng":0},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-02","ad":"2609_300KTV_Lead_KTV_FTEL_1","page":"Tuyển dụng FPT Telecom","status":"active","spend":0.0,"res":0,"reach":0,"impr":0,"clk":0,"eng":0},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-02","ad":"2609_300KTV_Lead_KTV_FTEL_Content4","page":"Tuyển dụng FPT Telecom Miền Bắc","status":"inactive","spend":0.0,"res":0,"reach":0,"impr":0,"clk":0,"eng":0},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-02","ad":"2609_300KTV_Lead_KTV_FTEL_Content 3","page":"Tuyển dụng FPT Telecom Miền Bắc","status":"inactive","spend":0.0,"res":0,"reach":0,"impr":0,"clk":0,"eng":0},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-02","ad":"2609_300KTV_Lead_KTV_FTEL_1","page":"Tuyển dụng FPT Telecom Miền Bắc","status":"active","spend":0.0,"res":0,"reach":0,"impr":0,"clk":0,"eng":0},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-01","ad":"2609_300KTV_Lead_KTV_FTEL_1","page":"Tuyển dụng FPT Telecom","status":"active","spend":0.0,"res":0,"reach":0,"impr":0,"clk":0,"eng":0},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-01","ad":"2609_300KTV_Lead_KTV_FTEL_Content4","page":"Tuyển dụng FPT Telecom Miền Bắc","status":"inactive","spend":0.0,"res":0,"reach":0,"impr":0,"clk":0,"eng":0},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-01","ad":"2609_300KTV_Lead_KTV_FTEL_Content 3","page":"Tuyển dụng FPT Telecom Miền Bắc","status":"inactive","spend":0.0,"res":0,"reach":0,"impr":0,"clk":0,"eng":0},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-01","ad":"2609_300KTV_Lead_KTV_FTEL_Content4","page":"Tuyển dụng FPT Telecom Miền Bắc","status":"active","spend":0.0,"res":0,"reach":0,"impr":0,"clk":0,"eng":0},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-01","ad":"2609_300KTV_Lead_KTV_FTEL_Content 3","page":"Tuyển dụng FPT Telecom","status":"active","spend":0.0,"res":0,"reach":0,"impr":0,"clk":0,"eng":0},{"camp":"2609_300KTV_Lead_KTV_FTEL","date":"2026-09-01","ad":"2609_300KTV_Lead_KTV_FTEL_1","page":"Tuyển dụng FPT Telecom Miền Bắc","status":"active","spend":0.0,"res":0,"reach":0,"impr":0,"clk":0,"eng":0}];
+
+/* ====================== TIỆN ÍCH SỐ ====================== */
+// "4,18" -> 4.18 ; "1.234,56" -> 1234.56 ; "12.5" -> 12.5
+function money(s){
+  s = String(s==null?"":s).trim().replace(/[^\d.,-]/g,"");
+  if(!s) return 0;
+  if(s.includes(",")){ s = s.replace(/\./g,"").replace(",","."); }
+  const v = parseFloat(s); return isFinite(v)?v:0;
+}
+// số nguyên: bỏ mọi dấu ngăn cách
+function ival(s){
+  s = String(s==null?"":s).trim().replace(/[^\d-]/g,"");
+  if(!s) return 0; const v = parseInt(s,10); return isFinite(v)?v:0;
+}
+const vnd = n => Math.round(n).toLocaleString("vi-VN")+"đ";
+const num = n => Math.round(n).toLocaleString("vi-VN");
+const pct = n => (isFinite(n)?n.toFixed(2):"0.00")+"%";
+const dmy = d => { const p=String(d).split("-"); return p.length===3?p[2]+"/"+p[1]:d; };
+
+/* ====================== ĐỌC CSV ====================== */
+function parseCSV(txt){
+  const rows=[]; let row=[], f="", q=false;
+  txt = txt.replace(/\r\n/g,"\n").replace(/\r/g,"\n");
+  for(let i=0;i<txt.length;i++){
+    const c=txt[i];
+    if(q){ if(c==='"'){ if(txt[i+1]==='"'){f+='"';i++;} else q=false; } else f+=c; }
+    else if(c==='"') q=true;
+    else if(c===","){ row.push(f); f=""; }
+    else if(c==="\n"){ row.push(f); f=""; if(row.some(x=>x!=="")) rows.push(row); row=[]; }
+    else f+=c;
+  }
+  row.push(f); if(row.some(x=>x!=="")) rows.push(row);
+  return rows;
+}
+function pick(head, ...names){
+  for(const n of names){
+    const i = head.findIndex(h => h.toLowerCase().trim().startsWith(n.toLowerCase()));
+    if(i>=0) return i;
+  }
+  return -1;
+}
+function fromCSV(txt){
+  const rows = parseCSV(txt); if(rows.length<2) return [];
+  const H = rows[0];
+  const c = {
+    camp:  pick(H,"Tên chiến dịch","Campaign name"),
+    date:  pick(H,"Ngày","Day","Date"),
+    ad:    pick(H,"Tên quảng cáo","Ad name"),
+    page:  pick(H,"Tên Trang","Page name"),
+    st:    pick(H,"Trạng thái phân phối","Delivery status"),
+    spend: pick(H,"Số tiền đã chi tiêu","Amount spent"),
+    res:   pick(H,"Kết quả","Results"),
+    reach: pick(H,"Người tiếp cận","Reach"),
+    impr:  pick(H,"Lượt hiển thị","Impressions"),
+    clk:   pick(H,"Lượt click vào liên kết","Link clicks"),
+    eng:   pick(H,"Lượt tương tác với bài viết","Post engagement")
+  };
+  const g=(r,i)=> i>=0 ? (r[i]||"") : "";
+  return rows.slice(1).map(r=>({
+    camp:g(r,c.camp).trim(), date:g(r,c.date).trim(), ad:g(r,c.ad).trim(),
+    page:g(r,c.page).trim(), status:(g(r,c.st)||"").trim().toLowerCase(),
+    spend:money(g(r,c.spend)), res:ival(g(r,c.res)), reach:ival(g(r,c.reach)),
+    impr:ival(g(r,c.impr)), clk:ival(g(r,c.clk)), eng:ival(g(r,c.eng))
+  }));
+}
+
+/* ====================== LỌC NHIỄU ====================== */
+let RAW=[], DATA=[], DROPPED=0;
+function clean(rows){
+  DROPPED=0;
+  const isAll = v => { v=(v||"").trim().toLowerCase(); return v==="all"||v==="tất cả"||v==="tong"||v==="total"; };
+  const out = rows.filter(r=>{
+    if(!r.date || isAll(r.date)) { DROPPED++; return false; }          // dòng tổng theo ngày
+    if(isAll(r.page) || isAll(r.ad)) { DROPPED++; return false; }      // dòng tổng theo trang / quảng cáo
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(r.date)) { DROPPED++; return false; }
+    if(CAMPAIGN_KEY && r.camp && !r.camp.toUpperCase().includes(CAMPAIGN_KEY)) { DROPPED++; return false; }
+    return true;
+  });
+  return out;
+}
+function contentOf(r){
+  let n = r.ad || "(không tên)";
+  if(r.camp && n.startsWith(r.camp+"_")) n = n.slice(r.camp.length+1);
+  return n.trim() || "(không tên)";
+}
+
+/* ====================== GỘP SỐ ====================== */
+function agg(rows){
+  const t={spend:0,res:0,reach:0,impr:0,clk:0,eng:0};
+  rows.forEach(r=>{ t.spend+=r.spend; t.res+=r.res; t.reach+=r.reach; t.impr+=r.impr; t.clk+=r.clk; t.eng+=r.eng; });
+  t.spendV = t.spend*RATE;
+  t.cpl  = t.res ? t.spendV/t.res : 0;
+  t.ctr  = t.impr ? t.clk/t.impr*100 : 0;
+  t.cpm  = t.impr ? t.spendV/t.impr*1000 : 0;
+  t.cpc  = t.clk ? t.spendV/t.clk : 0;
+  return t;
+}
+function groupBy(rows, keyFn){
+  const m=new Map();
+  rows.forEach(r=>{ const k=keyFn(r); if(!m.has(k)) m.set(k,[]); m.get(k).push(r); });
+  return [...m.entries()].map(([k,v])=>({key:k, rows:v, ...agg(v)}));
+}
+function inRange(r,a,b){ return (!a||r.date>=a) && (!b||r.date<=b); }
+function slice(a,b){ return DATA.filter(r=>inRange(r,a,b)); }
+
+/* ====================== TRẠNG THÁI FILTER ====================== */
+let F={from:"",to:""};
+function dates(){ return [...new Set(DATA.map(r=>r.date))].sort(); }
+function today(){ const d=dates(); return d.length?d[d.length-1]:""; }
+function addDays(s,n){ const d=new Date(s+"T00:00:00"); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10); }
+
+function onPreset(){
+  const p=document.getElementById("preset").value, all=dates();
+  if(!all.length) return;
+  const last=all[all.length-1], first=all[0];
+  if(p==="all"){ F={from:first,to:last}; }
+  else if(p==="today"){ F={from:last,to:last}; }
+  else if(p==="yday"){ const y=all[all.length-2]||last; F={from:y,to:y}; }
+  else if(p==="7d"){ F={from:addDays(last,-6),to:last}; }
+  else if(p==="month"){ F={from:last.slice(0,8)+"01",to:last}; }
+  else { F={from:document.getElementById("from").value,to:document.getElementById("to").value}; }
+  document.getElementById("from").value=F.from;
+  document.getElementById("to").value=F.to;
+  renderAll();
+}
+function setCustom(){
+  document.getElementById("preset").value="custom";
+  F={from:document.getElementById("from").value,to:document.getElementById("to").value};
+  renderAll();
+}
+/* ---------- nền sáng / tối ---------- */
+function syncThemeBtn(){
+  const dark=document.body.classList.contains("dark");
+  document.getElementById("themeBtn").textContent = dark ? "Nền sáng" : "Nền tối";
+}
+function toggleTheme(){
+  const dark=document.body.classList.toggle("dark");
+  try{ localStorage.setItem("bcTheme", dark?"dark":"light"); }catch(e){}
+  syncThemeBtn();
+}
+syncThemeBtn();
+
+function tab(n){
+  document.querySelectorAll(".tab").forEach(e=>e.classList.toggle("on",e.dataset.t==n));
+  document.querySelectorAll(".pane").forEach(e=>e.classList.toggle("on",e.id==="p"+n));
+}
+
+/* ====================== RENDER ====================== */
+function rateOf(cpl,res,spend){
+  if(spend>0 && !res) return "bad";
+  if(!res) return "off";
+  if(cpl<=CPL_GOOD) return "good";
+  if(cpl<=CPL_BAD)  return "warn";
+  return "bad";
+}
+const RATE_LABEL={good:"Hiệu quả cao",warn:"Trung bình",bad:"Cần tối ưu",off:"Chưa có lead"};
+
+function renderAll(){
+  const rows=slice(F.from,F.to), t=agg(rows);
+  document.getElementById("rangeInfo").textContent =
+    rows.length ? `${dmy(F.from)} - ${dmy(F.to)} · ${rows.length} dòng dữ liệu` : "Không có dữ liệu trong khoảng này";
+
+  document.getElementById("kpis").innerHTML = [
+    ["Số lượng lead", num(t.res), t.res?`Trung bình ${num(t.res/Math.max(1,new Set(rows.filter(r=>r.spend>0).map(r=>r.date)).size))} lead/ngày có chạy`:"-"],
+    ["Tổng chi tiêu", vnd(t.spendV), `$${t.spend.toFixed(2)} · tỷ giá 26.260`],
+    ["Lượt tiếp cận", num(t.reach), `${num(t.impr)} lượt hiển thị · CPM ${vnd(t.cpm)}`],
+    ["Lượt click liên kết", num(t.clk), `CTR ${pct(t.ctr)} · CPC ${vnd(t.cpc)}`],
+    ["Chi phí / lead (CPL)", t.res?vnd(t.cpl):"-",
+      t.res?`Ngưỡng tham chiếu ${num(CPL_GOOD)}-${num(CPL_BAD)}đ`:"chưa có lead"]
+  ].map(([k,v,n])=>`<div class="card"><div class="k">${k}</div><div class="v">${v}</div><div class="n">${n}</div></div>`).join("");
+
+  renderTrend(rows);
+  renderInsight(rows,t);
+  renderAds();
+  renderActions(rows,t);
+  renderCompare();
+}
+
+function tableHTML(cols, rows, foot){
+  return `<div class="tbl"><table><thead><tr>${cols.map(c=>`<th>${c}</th>`).join("")}</tr></thead>
+    <tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")||
+    `<tr><td colspan="${cols.length}" style="text-align:center;color:var(--dim)">Không có dữ liệu</td></tr>`}</tbody>
+    ${foot?`<tfoot><tr>${foot.map(c=>`<td>${c}</td>`).join("")}</tr></tfoot>`:""}</table></div>`;
+}
+function barCell(v,max){
+  const w = max>0 ? Math.round(v/max*100) : 0;
+  return `<div class="bar"><i style="width:${w}%"></i></div>`;
+}
+
+function renderTrend(rows){
+  const g = groupBy(rows.filter(r=>r.spend>0), r=>r.date).sort((a,b)=>a.key<b.key?-1:1);
+  const max = Math.max(1,...g.map(x=>x.res));
+  document.getElementById("trend").innerHTML = tableHTML(
+    ["Ngày","Chi tiêu","Lead","CPL","Tiếp cận","Click","CTR",""],
+    g.map(x=>[dmy(x.key),vnd(x.spendV),num(x.res),x.res?vnd(x.cpl):"-",num(x.reach),num(x.clk),pct(x.ctr),barCell(x.res,max)]),
+    null);
+}
+
+function renderInsight(rows,t){
+  // 1. theo content
+  const gc = groupBy(rows, contentOf).sort((a,b)=>b.res-a.res);
+  const mc = Math.max(1,...gc.map(x=>x.res));
+  document.getElementById("byContent").innerHTML = tableHTML(
+    ["Nội dung quảng cáo","Chi tiêu","% ngân sách","Lead","CPL","Đánh giá",""],
+    gc.map(x=>{
+      const rt=rateOf(x.cpl,x.res,x.spend);
+      return [x.key,vnd(x.spendV),t.spend?pct(x.spend/t.spend*100):"-",num(x.res),
+              x.res?vnd(x.cpl):"-",`<span class="pill p-${rt}">${RATE_LABEL[rt]}</span>`,barCell(x.res,mc)];
+    }),
+    ["Tổng",vnd(t.spendV),"100.00%",num(t.res),t.res?vnd(t.cpl):"-","",""]);
+
+  // 2. theo ngày
+  const gd = groupBy(rows.filter(r=>r.spend>0), r=>r.date).sort((a,b)=>a.key<b.key?-1:1);
+  const md = Math.max(1,...gd.map(x=>x.res));
+  document.getElementById("byDate").innerHTML = tableHTML(
+    ["Ngày","Chi tiêu","Lead","CPL","Đánh giá",""],
+    gd.map(x=>{
+      const rt=rateOf(x.cpl,x.res,x.spend);
+      return [dmy(x.key),vnd(x.spendV),num(x.res),x.res?vnd(x.cpl):"-",
+              `<span class="pill p-${rt}">${RATE_LABEL[rt]}</span>`,barCell(x.res,md)];
+    }), null);
+
+  // 3. theo trang
+  const gp = groupBy(rows, r=>r.page||"(không rõ trang)").sort((a,b)=>b.res-a.res);
+  const mp = Math.max(1,...gp.map(x=>x.res));
+  document.getElementById("byPage").innerHTML = tableHTML(
+    ["Trang chạy","% ngân sách","Chi tiêu","Lead","CPL","Đánh giá",""],
+    gp.map(x=>{
+      const rt=rateOf(x.cpl,x.res,x.spend);
+      return [x.key,t.spend?pct(x.spend/t.spend*100):"-",vnd(x.spendV),num(x.res),
+              x.res?vnd(x.cpl):"-",`<span class="pill p-${rt}">${RATE_LABEL[rt]}</span>`,barCell(x.res,mp)];
+    }),
+    ["Tổng","100.00%",vnd(t.spendV),num(t.res),t.res?vnd(t.cpl):"-","",""]);
+
+  // nhận xét
+  const li=[];
+  const cw = gc.filter(x=>x.res>0).sort((a,b)=>a.cpl-b.cpl)[0];
+  const cl = gc.filter(x=>x.res>0).sort((a,b)=>b.cpl-a.cpl)[0];
+  if(cw && cl && cw.key!==cl.key){
+    li.push(`<b>${cw.key}</b> đang là nội dung rẻ nhất với CPL <b>${vnd(cw.cpl)}</b> (${num(cw.res)} lead), trong khi <b>${cl.key}</b> đắt gấp <b>${(cl.cpl/cw.cpl).toFixed(1)} lần</b> ở mức ${vnd(cl.cpl)} nhưng vẫn tiêu ${pct(cl.spend/t.spend*100)} ngân sách.`);
+  }
+  const pw = gp.filter(x=>x.res>0).sort((a,b)=>a.cpl-b.cpl)[0];
+  const pl = gp.filter(x=>x.res>0).sort((a,b)=>b.cpl-a.cpl)[0];
+  if(pw && pl && pw.key!==pl.key){
+    li.push(`Trang <b>${pw.key}</b> cho CPL <b>${vnd(pw.cpl)}</b> nhưng chỉ nhận ${pct(pw.spend/t.spend*100)} ngân sách, còn <b>${pl.key}</b> nhận ${pct(pl.spend/t.spend*100)} ngân sách với CPL ${vnd(pl.cpl)} - ngân sách đang lệch về phía kém hiệu quả hơn.`);
+  }
+  const db = gd.filter(x=>x.res>0).sort((a,b)=>a.cpl-b.cpl)[0];
+  if(db) li.push(`Ngày hiệu quả nhất trong kỳ là <b>${dmy(db.key)}</b>: ${num(db.res)} lead, CPL ${vnd(db.cpl)}.`);
+  if(t.res){
+    const s = t.cpl<=CPL_GOOD ? `<b class="up">thấp hơn</b> ngưỡng tốt ${num(CPL_GOOD)}đ`
+            : t.cpl<=CPL_BAD ? `nằm trong ngưỡng chấp nhận ${num(CPL_GOOD)}-${num(CPL_BAD)}đ`
+            : `<b class="down">vượt</b> ngưỡng ${num(CPL_BAD)}đ`;
+    li.push(`CPL toàn kỳ <b>${vnd(t.cpl)}</b> - ${s}.`);
+  }
+  document.getElementById("insight").innerHTML =
+    `<div class="note"><b>Insight nổi bật</b><ul>${li.map(x=>`<li>${x}</li>`).join("")||"<li>Chưa đủ dữ liệu để rút nhận xét.</li>"}</ul></div>`;
+}
+
+function renderAds(){
+  const rows=slice(F.from,F.to);
+  const fs=document.getElementById("fStatus").value, fr=document.getElementById("fRate").value;
+  let g = groupBy(rows, r=>r.ad+" ||| "+r.page).map(x=>{
+    const st = x.rows.some(r=>r.status==="active") ? "active":"inactive";
+    const [ad,page]=x.key.split(" ||| ");
+    return {...x, ad, page, st, content:contentOf(x.rows[0]), rt:rateOf(x.cpl,x.res,x.spend)};
+  }).sort((a,b)=>b.res-a.res||b.spend-a.spend);
+  if(fs) g=g.filter(x=>x.st===fs);
+  if(fr) g=g.filter(x=>x.rt===fr);
+  const T=agg(g.flatMap(x=>x.rows));
+  document.getElementById("adsTable").innerHTML = tableHTML(
+    ["Quảng cáo","Trang","Trạng thái","Chi tiêu","Lead","CPL","Tiếp cận","Click","CTR","Đánh giá","Demo"],
+    g.map(x=>[
+      x.content, x.page,
+      `<span class="pill ${x.st==="active"?"p-good":"p-off"}">${x.st==="active"?"Đang chạy":"Đã tắt"}</span>`,
+      vnd(x.spendV), num(x.res), x.res?vnd(x.cpl):"-", num(x.reach), num(x.clk), pct(x.ctr),
+      `<span class="pill p-${x.rt}">${RATE_LABEL[x.rt]}</span>`,
+      `<button onclick='showAd(${JSON.stringify(x.ad).replace(/'/g,"&#39;")})'>Xem</button>`
+    ]),
+    ["Tổng","","",vnd(T.spendV),num(T.res),T.res?vnd(T.cpl):"-",num(T.reach),num(T.clk),pct(T.ctr),"",""]);
+}
+
+function showAd(name){
+  const c = AD_CREATIVES[name] || {};
+  const body = (c.text||c.image)
+    ? `${c.text?`<div style="white-space:pre-wrap;margin-top:10px">${c.text}</div>`:""}
+       ${c.image?`<img src="${c.image}" alt="">`:""}
+       ${c.link?`<div style="margin-top:12px"><a href="${c.link}" target="_blank" style="color:var(--acc2)">Mở bài quảng cáo gốc</a></div>`:""}`
+    : `<div class="ph">Chưa có nội dung demo cho quảng cáo này.<br><br>
+        Để hiện được, mở file HTML này bằng trình soạn thảo, tìm dòng <code>const AD_CREATIVES = {};</code> rồi điền:<br><br>
+        <code style="display:block;text-align:left;padding:10px">"${name}": {<br>&nbsp;&nbsp;text: "Nội dung bài quảng cáo...",<br>&nbsp;&nbsp;image: "https://link-anh.jpg",<br>&nbsp;&nbsp;link: "https://facebook.com/..."<br>}</code></div>`;
+  document.getElementById("modalBox").innerHTML =
+    `<div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">
+       <b style="font-size:15px">${name}</b><button onclick="closeModal()">Đóng</button></div>${body}`;
+  document.getElementById("modal").classList.add("on");
+}
+function closeModal(){ document.getElementById("modal").classList.remove("on"); }
+
+function renderActions(rows,t){
+  const A=[];
+  const gc = groupBy(rows, contentOf).filter(x=>x.spend>0);
+  const gp = groupBy(rows, r=>r.page||"(không rõ)").filter(x=>x.spend>0);
+  const withLead = gc.filter(x=>x.res>0);
+  const best = withLead.slice().sort((a,b)=>a.cpl-b.cpl)[0];
+  const worst= withLead.slice().sort((a,b)=>b.cpl-a.cpl)[0];
+
+  gc.filter(x=>!x.res).forEach(x=>A.push(["hi",
+    `Tắt hoặc làm lại nội dung "${x.key}"`,
+    `Đã tiêu ${vnd(x.spendV)} (${pct(x.spend/t.spend*100)} ngân sách) nhưng chưa ra lead nào trong kỳ.`]));
+
+  if(worst && worst.cpl>CPL_BAD) A.push(["hi",
+    `Cắt ngân sách nội dung "${worst.key}"`,
+    `CPL ${vnd(worst.cpl)} vượt ngưỡng ${num(CPL_BAD)}đ, đang chiếm ${pct(worst.spend/t.spend*100)} ngân sách với ${num(worst.res)} lead.`]);
+
+  if(best && worst && best.key!==worst.key && worst.cpl>best.cpl*1.5) A.push(["hi",
+    `Dồn ngân sách từ "${worst.key}" sang "${best.key}"`,
+    `Cùng kỳ, "${best.key}" cho CPL ${vnd(best.cpl)} còn "${worst.key}" là ${vnd(worst.cpl)} - chênh ${(worst.cpl/best.cpl).toFixed(1)} lần. Chuyển ngân sách ước thu thêm lead mà không tăng chi.`]);
+
+  const pw = gp.filter(x=>x.res>0).sort((a,b)=>a.cpl-b.cpl)[0];
+  const pl = gp.filter(x=>x.res>0).sort((a,b)=>b.cpl-a.cpl)[0];
+  if(pw && pl && pw.key!==pl.key && pw.spend < pl.spend) A.push(["mid",
+    `Tăng ngân sách cho trang "${pw.key}"`,
+    `Trang này CPL ${vnd(pw.cpl)} (rẻ hơn "${pl.key}" ở mức ${vnd(pl.cpl)}) nhưng mới nhận ${pct(pw.spend/t.spend*100)} ngân sách.`]);
+
+  if(best) A.push(["mid",
+    `Nhân bản biến thể mới từ "${best.key}"`,
+    `Đây là nội dung tốt nhất kỳ này (${num(best.res)} lead, CPL ${vnd(best.cpl)}). Làm 2-3 biến thể đổi hình/tiêu đề để chống bão hoà.`]);
+
+  if(t.ctr && t.ctr<1) A.push(["mid",
+    `Cải thiện CTR đang ở mức ${pct(t.ctr)}`,
+    `CTR dưới 1% cho thấy hình ảnh hoặc dòng tiêu đề chưa đủ hút. Thử đổi ảnh chính và câu mở đầu.`]);
+
+  A.push(["low",
+    `Bổ sung link + nội dung từng bài quảng cáo vào báo cáo`,
+    `Phần 3 hiện chỉ có số liệu, chưa xem được demo bài. Điền vào AD_CREATIVES trong file để xem text và ảnh ngay trong dashboard.`]);
+  A.push(["low",
+    `Theo dõi chất lượng lead sau tuyển dụng`,
+    `CPL toàn kỳ ${t.res?vnd(t.cpl):"-"} chỉ đo giá lead trên Meta. Cần đối chiếu tỷ lệ lead thật sự đi phỏng vấn để biết nội dung nào ra lead chất lượng.`]);
+
+  const L={hi:"Ưu tiên cao",mid:"Ưu tiên trung bình",low:"Ưu tiên thấp"};
+  document.getElementById("actions").innerHTML = ["hi","mid","low"].map(k=>{
+    const list=A.filter(a=>a[0]===k); if(!list.length) return "";
+    return `<h3>${L[k]}</h3>`+list.map(a=>
+      `<div class="act ${k}"><b>${a[1]}</b><div class="why">${a[2]}</div></div>`).join("");
+  }).join("");
+}
+
+/* ---------- so sánh 2 kỳ ---------- */
+function cmpPreset(k){
+  const all=dates(); if(all.length<2) return;
+  const last=all[all.length-1];
+  let a,b;
+  if(k==="d"){ a=[last,last]; const y=all[all.length-2]; b=[y,y]; }
+  else if(k==="w"){ a=[addDays(last,-6),last]; b=[addDays(last,-13),addDays(last,-7)]; }
+  else { const m=last.slice(0,8)+"01"; const pe=addDays(m,-1); a=[m,last]; b=[pe.slice(0,8)+"01",pe]; }
+  document.getElementById("aFrom").value=a[0]; document.getElementById("aTo").value=a[1];
+  document.getElementById("bFrom").value=b[0]; document.getElementById("bTo").value=b[1];
+  renderCompare();
+}
+function renderCompare(){
+  const a1=document.getElementById("aFrom").value, a2=document.getElementById("aTo").value;
+  const b1=document.getElementById("bFrom").value, b2=document.getElementById("bTo").value;
+  const box=document.getElementById("cmpOut");
+  if(!a1||!a2||!b1||!b2){ box.innerHTML=`<div class="note">Chọn khoảng ngày cho cả 2 kỳ, hoặc bấm một nút gợi ý ở trên.</div>`; return; }
+  const A=agg(slice(a1,a2)), B=agg(slice(b1,b2));
+  const M=[["Lead","res",num,1],["Chi tiêu","spendV",vnd,0],["Tiếp cận","reach",num,1],
+           ["Click liên kết","clk",num,1],["CPL","cpl",v=>v?vnd(v):"-",-1],["CTR","ctr",pct,1]];
+  box.innerHTML = tableHTML(
+    [`Chỉ số`,`Kỳ A (${dmy(a1)}-${dmy(a2)})`,`Kỳ B (${dmy(b1)}-${dmy(b2)})`,"Chênh lệch"],
+    M.map(([lab,key,fmt,dir])=>{
+      const va=A[key]||0, vb=B[key]||0;
+      let d="-";
+      if(vb){ const p=(va-vb)/vb*100; const good = dir===0 ? null : (dir>0 ? p>0 : p<0);
+        const cls = good===null?"":(good?"up":"down");
+        d=`<span class="${cls}">${p>0?"+":""}${p.toFixed(1)}%</span>`; }
+      else if(va) d=`<span class="up">mới phát sinh</span>`;
+      return [lab,fmt(va),fmt(vb),d];
+    }), null);
+}
+
+/* ====================== NẠP DỮ LIỆU ====================== */
+function boot(rows, src){
+  RAW=rows; DATA=clean(rows);
+  const all=dates();
+  document.getElementById("noiseInfo").innerHTML = DROPPED
+    ? ` Lần nạp này đã bỏ <b>${DROPPED}</b> dòng nhiễu trên tổng ${RAW.length} dòng.` : "";
+  if(!all.length){ document.getElementById("msg").innerHTML =
+    `<div class="err">Không đọc được dòng dữ liệu hợp lệ nào từ nguồn.</div>`; return; }
+  const spent = DATA.filter(r=>r.spend>0).map(r=>r.date).sort();
+  document.getElementById("rangeExport").textContent = `${dmy(all[0])} - ${dmy(all[all.length-1])}`;
+  document.getElementById("firstDeliver").textContent = spent.length?dmy(spent[0]):"chưa phân phối";
+  document.getElementById("campName").textContent = DATA[0].camp || "-";
+  document.getElementById("lastUpd").textContent =
+    new Date().toLocaleString("vi-VN",{hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit",year:"numeric"})
+    + (src==="live" ? " (dữ liệu sống từ Google Sheet)" : " (bản chụp dự phòng trong file)");
+  document.getElementById("preset").value="all"; onPreset();
+  cmpPreset("d");
+}
+async function loadData(manual){
+  const msg=document.getElementById("msg");
+  try{
+    const res = await fetch(CSV_URL + "&_t=" + Date.now(), {cache:"no-store"});
+    if(!res.ok) throw new Error("HTTP "+res.status);
+    const rows = fromCSV(await res.text());
+    if(!rows.length) throw new Error("Sheet rỗng");
+    msg.innerHTML = manual ? `<div class="ok">Đã tải lại dữ liệu mới nhất từ Google Sheet.</div>` : "";
+    boot(rows,"live");
+  }catch(e){
+    msg.innerHTML = `<div class="err"><b>Không tải được dữ liệu sống từ Google Sheet</b> (${e.message}).
+      Đang hiển thị bản chụp dự phòng lưu sẵn trong file. Kiểm tra lại link publish của Sheet, hoặc mở file này qua http thay vì mở trực tiếp từ ổ đĩa.</div>`;
+    boot(SNAPSHOT,"snapshot");
+  }
+}
+loadData(false);
+</script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+# Trang tĩnh 1 file - không cần build, không tốn build minutes
+[build]
+  publish = "."
+  command = ""
